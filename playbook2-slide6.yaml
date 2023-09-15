@@ -1,0 +1,26 @@
+- name: play2
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: install nginx
+    become: true
+    apt:
+      name: nginx
+      state: latest
+
+  - name: moving index.html file
+    become: true
+    copy:
+      src: ./index.html
+      dest: /var/www/html/index.html 
+
+- name: restarting nginx
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: restarting
+    become: true
+    ansible.builtin.sysvinit:
+      name: nginx
+      state: restarted
+    
